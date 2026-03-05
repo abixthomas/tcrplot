@@ -81,7 +81,7 @@ export default function WhyChooseUs() {
     };
 
     return (
-        <section ref={ref} className="py-32 bg-[#FFFFFF]">
+        <section ref={ref} className="py-40 md:py-48 lg:py-56 bg-[#FFFFFF]">
             <div className="container-site">
 
                 {/* Header Container */}

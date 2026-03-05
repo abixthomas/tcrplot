@@ -25,23 +25,37 @@ export default function HomePage() {
             {/* 1. Hero — Cinematic slider + search panel + floating stats */}
             <Hero />
 
+            <div className="h-32 md:h-48 lg:h-64 bg-[#FFFFFF] w-full" />
+
             {/* 2. Thrissur Video — Why invest in Thrissur, video + content */}
             <ThrissurVideo />
+
+            <div className="h-32 md:h-48 lg:h-64 bg-[#FFFFFF] w-full" />
 
             {/* 3. Featured Plots — 3D tilt cards, unique listing design */}
             <FeaturedPlots />
 
+            <div className="h-32 md:h-48 lg:h-64 bg-[#F9FAFB] w-full" />
+
             {/* 4. Why Choose Us — Dark section with numbered watermark cards */}
             <WhyChooseUs />
+
+            <div className="h-32 md:h-48 lg:h-64 bg-[#FFFFFF] w-full" />
 
             {/* 5. Highlights — Animated counter numbers */}
             <Highlights />
 
+            <div className="h-32 md:h-48 lg:h-64 bg-[#F3F4F6] w-full" />
+
             {/* 6. Testimonials — Review carousel with trust-building layout */}
             <Testimonials />
 
+            <div className="h-32 md:h-48 lg:h-64 bg-[#0B5C8A] w-full" />
+
             {/* 7. Blog Highlights — Land intelligence articles */}
             <BlogHighlights />
+
+            <div className="h-32 md:h-48 lg:h-64 bg-[#F9FAFB] w-full" />
 
             {/* 8. Contact Section — Full contact form + direct methods */}
             <ContactSection />

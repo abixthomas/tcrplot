@@ -19,7 +19,7 @@ export default function ContactSection() {
     };
 
     return (
-        <section ref={ref} className="bg-[#0B5C8A] py-32 border-t border-white/10 relative overflow-hidden">
+        <section ref={ref} className="bg-[#0B5C8A] py-40 md:py-48 lg:py-56 border-t border-white/10 relative overflow-hidden">
 
             {/* Minimalist Watermark Background */}
             <div className="absolute -top-[20%] -right-[10%] text-[#FFFFFF]/5 text-[400px] font-black font-['Plus_Jakarta_Sans'] select-none pointer-events-none leading-none z-0">

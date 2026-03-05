@@ -84,7 +84,7 @@ export default function Testimonials() {
     const inView = useInView(ref, { once: true, margin: '-10% 0px' });
 
     return (
-        <section ref={ref} className="py-32 bg-[#0B5C8A] overflow-hidden">
+        <section ref={ref} className="py-40 md:py-48 lg:py-56 bg-[#0B5C8A] overflow-hidden">
             <div className="container-site mb-16">
                 <motion.div
                     initial={{ opacity: 0, y: 30 }}

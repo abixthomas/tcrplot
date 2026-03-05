@@ -93,7 +93,7 @@ export default function Highlights() {
     };
 
     return (
-        <section ref={ref} className="py-32 bg-[#F3F4F6]">
+        <section ref={ref} className="py-40 md:py-48 lg:py-56 bg-[#F3F4F6]">
             <div className="container-site">
 
                 {/* Header Section */}

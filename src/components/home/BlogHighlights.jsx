@@ -17,7 +17,7 @@ export default function BlogHighlights() {
     };
 
     return (
-        <section ref={ref} className="py-24 md:py-32 bg-[#F9FAFB] border-y border-gray-200">
+        <section ref={ref} className="py-32 md:py-48 lg:py-56 bg-[#F9FAFB] border-y border-gray-200">
             <div className="container-site">
 
                 {/* Minimalist Editorial Header */}

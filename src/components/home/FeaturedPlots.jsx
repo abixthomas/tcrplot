@@ -5,11 +5,11 @@ import { MapPin, Maximize, ExternalLink } from 'lucide-react';
 import Image from 'next/image';
 
 const PLOTS = [
-    { id: 1, title: 'The Heritage Reserve', location: 'Punkunnam, Thrissur', price: '₹1.2 Cr', area: '15 Cents', image: 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=800&q=80', status: 'Available' },
-    { id: 2, title: 'Ollur Green Valley', location: 'Ollur, Thrissur', price: '₹85 L', area: '10 Cents', image: 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=800&q=80', status: 'Just Listed' },
-    { id: 3, title: 'Cultural Corridor plots', location: 'Thrissur City', price: '₹2.5 Cr', area: '20 Cents', image: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800&q=80', status: 'Premium' },
-    { id: 4, title: 'Kuttippuram Estates', location: 'Thrissur Outskirts', price: '₹60 L', area: '12 Cents', image: 'https://images.unsplash.com/photo-1628624747186-a941c476b7ef?w=800&q=80', status: 'Available' },
-    { id: 5, title: 'The Royal Canvas', location: 'Kuttanellur, Thrissur', price: '₹1.8 Cr', area: '18 Cents', image: 'https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?w=800&q=80', status: 'Selling Fast' }
+    { id: 1, title: 'The Heritage Reserve', location: 'Punkunnam, Thrissur', price: '₹1.2 Cr', area: '15 Cents', image: '/images/plots/plot1.jpg', status: 'Available' },
+    { id: 2, title: 'Ollur Green Valley', location: 'Ollur, Thrissur', price: '₹85 L', area: '10 Cents', image: '/images/plots/plot2.jpg', status: 'Just Listed' },
+    { id: 3, title: 'Cultural Corridor plots', location: 'Thrissur City', price: '₹2.5 Cr', area: '20 Cents', image: '/images/plots/plot3.jpg', status: 'Premium' },
+    { id: 4, title: 'Kuttippuram Estates', location: 'Thrissur Outskirts', price: '₹60 L', area: '12 Cents', image: '/images/plots/plot1.jpg', status: 'Available' },
+    { id: 5, title: 'The Royal Canvas', location: 'Kuttanellur, Thrissur', price: '₹1.8 Cr', area: '18 Cents', image: '/images/plots/plot2.jpg', status: 'Selling Fast' }
 ];
 
 // 3D Tilt Card Component
@@ -123,7 +123,7 @@ export default function FeaturedPlots() {
     };
 
     return (
-        <section className="py-32 bg-[#F9FAFB] overflow-hidden">
+        <section className="py-40 md:py-48 lg:py-56 bg-[#F9FAFB] overflow-hidden">
             <div className="container-site mb-16">
                 <motion.div
                     initial={{ opacity: 0, y: 30 }}
