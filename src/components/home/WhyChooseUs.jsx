@@ -1,93 +1,141 @@
 'use client';
-import FadeIn from '@/components/FadeIn';
-import { motion } from 'framer-motion';
-import { Shield, Clock, MapPin, Star, Globe, Zap, TrendingUp, FileCheck } from 'lucide-react';
+import { useRef } from 'react';
+import { motion, useInView } from 'framer-motion';
 
-const containerVariants = {
-    hidden: { opacity: 0 },
-    show: { opacity: 1, transition: { staggerChildren: 0.1 } }
-};
+// Custom designed premium SVG Icons inline
+const ShieldIcon = () => (
+    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#0B5C8A" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+        <path d="M9 12l2 2 4-4" />
+    </svg>
+);
 
-const itemVariants = {
-    hidden: { opacity: 0, y: 30 },
-    show: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 60, damping: 15 } }
-};
+const CompassIcon = () => (
+    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#0B5C8A" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+        <circle cx="12" cy="12" r="10" />
+        <polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76" />
+    </svg>
+);
 
-const reasons = [
-    { icon: Shield, title: '100% Legal & Clear Title', desc: 'Every listing carries verified patta, encumbrance certificate, and legal clearance from our in-house lawyers.', color: '#1B4F8A' },
-    { icon: Clock, title: '25+ Years of Local Expertise', desc: 'Since 1998, we have helped 1,000+ families buy land in Thrissur with zero disputes or complications.', color: '#E63329' },
-    { icon: FileCheck, title: 'End-to-End Documentation', desc: 'From EC verification to sub-registrar registration — we handle every document for a seamless experience.', color: '#2C9BE8' },
-    { icon: Star, title: 'Premium Verified Listings Only', desc: 'We reject 7 out of 10 plots submitted to us. Only quality, fairly-priced properties make our list.', color: '#D4A843' },
-    { icon: Globe, title: 'NRI-Friendly Service', desc: 'Power of attorney, virtual site tours, remote documentation — we serve NRI buyers without hassle.', color: '#1B4F8A' },
-    { icon: TrendingUp, title: '8% Annual Appreciation', desc: 'Thrissur land has delivered 8% annual appreciation over 5 years, making it Kerala\'s smartest investment.', color: '#E63329' },
+const LineChartIcon = () => (
+    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#0B5C8A" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M3 3v18h18" />
+        <path d="M18.7 8l-5.1 5.2-2.8-2.7L7 14.3" />
+    </svg>
+);
+
+const GemIcon = () => (
+    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#0B5C8A" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M6 3h12l4 6-10 13L2 9Z" />
+        <path d="M11 3v19" />
+        <path d="M2 9h20" />
+    </svg>
+);
+
+const REASONS = [
+    {
+        id: '01',
+        icon: <ShieldIcon />,
+        title: 'Clear Titles & Legality',
+        description: 'Every property is 100% legally vetted by top-tier advocates. Zero encumbrances, pristine paperwork, and absolute peace of mind.'
+    },
+    {
+        id: '02',
+        icon: <CompassIcon />,
+        title: 'Prime Thrissur Corridors',
+        description: 'We do not sell isolated lands. Our portfolio only includes plots situated in the fastest-appreciating, high-connectivity corridors of the city.'
+    },
+    {
+        id: '03',
+        icon: <LineChartIcon />,
+        title: 'Generational ROI',
+        description: 'Our curated plots historically outperform standard real estate, offering generational wealth scaling and immense resale demand.'
+    },
+    {
+        id: '04',
+        icon: <GemIcon />,
+        title: 'The Premium Standard',
+        description: 'We operate strictly in the ultra-premium segment. Our developments guarantee elite neighborhoods and unmatched lifestyle value.'
+    }
 ];
 
 export default function WhyChooseUs() {
+    const ref = useRef(null);
+    const inView = useInView(ref, { once: true, margin: '-10% 0px' });
+
+    // Stagger container
+    const containerVariants = {
+        hidden: {},
+        visible: {
+            transition: { staggerChildren: 0.2, delayChildren: 0.3 }
+        }
+    };
+
+    // Spring animation for nodes
+    const itemVariants = {
+        hidden: { opacity: 0, y: 40, scale: 0.95 },
+        visible: {
+            opacity: 1, y: 0, scale: 1,
+            transition: { type: 'spring', stiffness: 50, damping: 12, mass: 1 }
+        }
+    };
+
     return (
-        <section style={{ background: '#071b38', paddingTop: 96, paddingBottom: 96, position: 'relative', overflow: 'hidden' }}>
-            {/* Dot pattern */}
-            <div style={{ position: 'absolute', inset: 0, opacity: 0.04, backgroundImage: 'radial-gradient(circle, #fff 1px, transparent 0)', backgroundSize: '32px 32px', pointerEvents: 'none' }} />
+        <section ref={ref} className="py-32 bg-[#FFFFFF]">
+            <div className="container-site">
 
-            <div className="container-site" style={{ position: 'relative', zIndex: 1 }}>
-                {/* Header */}
-                <div style={{ textAlign: 'center', marginBottom: 64 }}>
-                    <FadeIn><div className="tag" style={{ color: '#2C9BE8', justifyContent: 'center', marginBottom: 16 }}>Why Choose TCR Plots</div></FadeIn>
-                    <FadeIn delay={0.1}>
-                        <h2 style={{ fontFamily: '"Cormorant Garamond", Georgia, serif', fontSize: 'clamp(2rem,4vw,2.8rem)', fontWeight: 900, color: '#fff', lineHeight: 1.25 }}>
-                            The Standard of Trust,<br /><em style={{ color: '#2C9BE8' }}>Beyond Compare</em>
-                        </h2>
-                    </FadeIn>
-                    <FadeIn delay={0.2}>
-                        <p style={{ marginTop: 16, fontSize: 16, color: 'rgba(255,255,255,0.5)', maxWidth: 520, margin: '16px auto 0' }}>
-                            We don't just sell land — we build relationships that last decades.
-                        </p>
-                    </FadeIn>
-                </div>
+                {/* Header Container */}
+                <motion.div
+                    initial={{ opacity: 0, y: 20 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.8 }}
+                    className="flex flex-col items-center text-center mb-24"
+                >
+                    <div className="flex items-center gap-3 mb-6">
+                        <span className="w-10 h-[1px] bg-[#D33C29]" />
+                        <span className="text-[#D33C29] text-[11px] font-bold uppercase tracking-[0.2em]">The Premium Trust</span>
+                        <span className="w-10 h-[1px] bg-[#D33C29]" />
+                    </div>
+                    <h2 className="text-[#0B5C8A] text-4xl md:text-5xl lg:text-6xl font-extrabold font-['Plus_Jakarta_Sans'] leading-tight max-w-3xl">
+                        Why Legacy Investors <br />Choose Us
+                    </h2>
+                </motion.div>
 
-                {/* Cards grid */}
+                {/* Asymmetrical Staggered Layout */}
                 <motion.div
                     variants={containerVariants}
                     initial="hidden"
-                    whileInView="show"
-                    viewport={{ once: true, margin: "-50px" }}
-                    style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 20, marginBottom: 72 }}
+                    animate={inView ? "visible" : "hidden"}
+                    className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-24 max-w-5xl mx-auto"
                 >
-                    {reasons.map((r, i) => (
-                        <motion.div
-                            key={r.title}
-                            variants={itemVariants}
-                            whileHover="hover"
-                            style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: 12, padding: '28px 24px', cursor: 'default' }}
-                        >
+                    {REASONS.map((reason, index) => {
+                        // Create asymmetry by pushing even items down
+                        const isEven = index % 2 !== 0;
+                        return (
                             <motion.div
-                                variants={{ hover: { scale: 1.15, rotate: 5, backgroundColor: `${r.color}44` } }}
-                                transition={{ type: 'spring', stiffness: 300, damping: 10 }}
-                                style={{ width: 48, height: 48, borderRadius: 10, background: `${r.color}22`, display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 18 }}
+                                key={reason.id}
+                                variants={itemVariants}
+                                className={`relative flex flex-col items-start ${isEven ? 'md:mt-24' : ''}`}
                             >
-                                <r.icon size={24} style={{ color: r.color }} />
-                            </motion.div>
-                            <h3 style={{ fontSize: 17, fontWeight: 700, color: '#fff', marginBottom: 10, lineHeight: 1.35 }}>{r.title}</h3>
-                            <p style={{ fontSize: 14, color: 'rgba(255,255,255,0.5)', lineHeight: 1.75 }}>{r.desc}</p>
-                        </motion.div>
-                    ))}
-                </motion.div>
+                                {/* Background Watermark Number */}
+                                <div className="absolute -top-12 -left-8 text-[120px] font-black text-[#0B5C8A]/5 select-none pointer-events-none font-['Plus_Jakarta_Sans'] leading-none z-0">
+                                    {reason.id}
+                                </div>
 
-                {/* Animated stat bar */}
-                <FadeIn>
-                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 0, background: 'rgba(255,255,255,0.06)', borderRadius: 12, overflow: 'hidden', border: '1px solid rgba(255,255,255,0.08)' }}>
-                        {[
-                            { num: '1,200+', label: 'Plots Sold', color: '#1B4F8A' },
-                            { num: '25+', label: 'Years of Trust', color: '#E63329' },
-                            { num: '98%', label: 'Client Satisfaction', color: '#2C9BE8' },
-                            { num: '10+', label: 'Areas Covered', color: '#D4A843' },
-                        ].map((s, i) => (
-                            <div key={s.label} style={{ textAlign: 'center', padding: '32px 16px', borderRight: i < 3 ? '1px solid rgba(255,255,255,0.08)' : 'none' }}>
-                                <div style={{ fontSize: 'clamp(2rem, 4vw, 3rem)', fontWeight: 900, color: s.color, lineHeight: 1 }}>{s.num}</div>
-                                <div style={{ fontSize: 13, color: 'rgba(255,255,255,0.45)', marginTop: 6 }}>{s.label}</div>
-                            </div>
-                        ))}
-                    </div>
-                </FadeIn>
+                                <div className="bg-[#F9FAFB] p-5 rounded-2xl mb-8 border border-[#E5E7EB] z-10 relative group hover:border-[#0B5C8A]/30 transition-colors">
+                                    {reason.icon}
+                                    <div className="absolute inset-0 bg-[#0B5C8A]/5 rounded-2xl scale-0 group-hover:scale-100 transition-transform duration-300 origin-center" />
+                                </div>
+
+                                <h3 className="text-[#0B5C8A] text-2xl font-bold font-['Plus_Jakarta_Sans'] mb-4 z-10">
+                                    {reason.title}
+                                </h3>
+
+                                <p className="text-[#4B5563] text-base leading-relaxed max-w-md z-10 font-medium">
+                                    {reason.description}
+                                </p>
+                            </motion.div>
+                        );
+                    })}
+                </motion.div>
             </div>
         </section>
     );

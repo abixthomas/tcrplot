@@ -1,126 +1,156 @@
 'use client';
-import Link from 'next/link';
-import { motion } from 'framer-motion';
-import { MapPin, Maximize2, ArrowRight, Eye } from 'lucide-react';
-import { plots } from '@/lib/data';
-import FadeIn from '@/components/FadeIn';
+import { useRef, useState, useEffect } from 'react';
+import { motion, useScroll, useTransform, useMotionValue, useSpring } from 'framer-motion';
+import { MapPin, Maximize, ExternalLink } from 'lucide-react';
+import Image from 'next/image';
 
-const purposeColors = {
-    residential: { bg: '#1B4F8A', label: 'Residential' },
-    commercial: { bg: '#E63329', label: 'Commercial' },
-    investment: { bg: '#D4A843', label: 'Investment' },
-};
+const PLOTS = [
+    { id: 1, title: 'The Heritage Reserve', location: 'Punkunnam, Thrissur', price: '₹1.2 Cr', area: '15 Cents', image: 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=800&q=80', status: 'Available' },
+    { id: 2, title: 'Ollur Green Valley', location: 'Ollur, Thrissur', price: '₹85 L', area: '10 Cents', image: 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=800&q=80', status: 'Just Listed' },
+    { id: 3, title: 'Cultural Corridor plots', location: 'Thrissur City', price: '₹2.5 Cr', area: '20 Cents', image: 'https://images.unsplash.com/photo-1600607687985-cecb5b85a1ef?w=800&q=80', status: 'Premium' },
+    { id: 4, title: 'Kuttippuram Estates', location: 'Thrissur Outskirts', price: '₹60 L', area: '12 Cents', image: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800&q=80', status: 'Available' },
+    { id: 5, title: 'The Royal Canvas', location: 'Kuttanellur, Thrissur', price: '₹1.8 Cr', area: '18 Cents', image: 'https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?w=800&q=80', status: 'Selling Fast' }
+];
 
-const containerVariants = {
-    hidden: { opacity: 0 },
-    show: { opacity: 1, transition: { staggerChildren: 0.15 } }
-};
+// 3D Tilt Card Component
+function TiltCard({ plot }) {
+    const ref = useRef(null);
+    const x = useMotionValue(0);
+    const y = useMotionValue(0);
 
-const itemVariants = {
-    hidden: { opacity: 0, y: 30 },
-    show: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 60, damping: 15 } }
-};
+    const mouseXSpring = useSpring(x);
+    const mouseYSpring = useSpring(y);
 
-function PlotCard({ plot }) {
-    const p = purposeColors[plot.purpose];
+    const rotateX = useTransform(mouseYSpring, [-0.5, 0.5], [10, -10]);
+    const rotateY = useTransform(mouseXSpring, [-0.5, 0.5], [-10, 10]);
+
+    const handleMouseMove = (e) => {
+        if (!ref.current) return;
+        const rect = ref.current.getBoundingClientRect();
+        const width = rect.width;
+        const height = rect.height;
+        const mouseX = e.clientX - rect.left;
+        const mouseY = e.clientY - rect.top;
+        const xPct = mouseX / width - 0.5;
+        const yPct = mouseY / height - 0.5;
+        x.set(xPct);
+        y.set(yPct);
+    };
+
+    const handleMouseLeave = () => {
+        x.set(0);
+        y.set(0);
+    };
+
     return (
         <motion.div
-            variants={itemVariants}
-            whileHover="hover"
-            className="card relative overflow-hidden group"
-            style={{ height: '100%', display: 'flex', flexDirection: 'column', cursor: 'pointer', background: '#fff', borderRadius: 16, boxShadow: '0 4px 20px rgba(0,0,0,0.06)' }}
+            ref={ref}
+            onMouseMove={handleMouseMove}
+            onMouseLeave={handleMouseLeave}
+            style={{ rotateX, rotateY, transformStyle: 'preserve-3d', perspective: 1000 }}
+            className="group relative flex-shrink-0 w-[400px] h-[550px] rounded-2xl overflow-hidden cursor-pointer bg-white"
         >
-            {/* Image */}
-            <div style={{ position: 'relative', height: 240, overflow: 'hidden', borderRadius: '16px 16px 0 0' }}>
-                <motion.img
-                    variants={{ hover: { scale: 1.05 } }}
-                    transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-                    src={plot.images[0]}
+            {/* The Image (Scales on hover) */}
+            <motion.div
+                className="absolute inset-0 w-full h-full"
+                style={{ transform: 'translateZ(-50px)' }}
+            >
+                <img
+                    src={plot.image}
                     alt={plot.title}
-                    style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                    className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-110"
                 />
-                <div style={{ position: 'absolute', top: 12, left: 12, display: 'flex', gap: 6 }}>
-                    <span className="badge" style={{ background: p.bg, color: '#fff' }}>{p.label}</span>
-                    {plot.featured && <span className="badge badge-gold">Featured</span>}
+                <div className="absolute inset-0 bg-gradient-to-t from-[#0B5C8A] via-transparent to-transparent opacity-60" />
+            </motion.div>
+
+            {/* Top Status Tag */}
+            <div className="absolute top-6 left-6" style={{ transform: 'translateZ(30px)' }}>
+                <span className="bg-[#D33C29] text-white text-xs font-bold uppercase tracking-wider px-3 py-1.5 rounded-full">
+                    {plot.status}
+                </span>
+            </div>
+
+            {/* Initial Bottom Info (Fades out on hover) */}
+            <div className="absolute bottom-8 left-8 right-8 transition-opacity duration-300 group-hover:opacity-0" style={{ transform: 'translateZ(40px)' }}>
+                <h3 className="text-white text-2xl font-bold font-['Plus_Jakarta_Sans'] leading-tight mb-2">{plot.title}</h3>
+                <div className="flex items-center text-white/80 text-sm font-medium">
+                    <MapPin size={14} className="mr-1.5" /> {plot.location}
                 </div>
-                <div style={{ position: 'absolute', top: 12, right: 12, display: 'flex', alignItems: 'center', gap: 4, background: 'rgba(0,0,0,0.45)', borderRadius: 4, padding: '3px 8px' }}>
-                    <Eye size={11} style={{ color: '#fff' }} />
-                    <span style={{ fontSize: 11, color: '#fff' }}>{plot.views}</span>
+            </div>
+
+            {/* Slide-Up Details Panel (Reveals on hover) */}
+            <motion.div
+                className="absolute bottom-0 left-0 right-0 bg-white p-8 translate-y-full group-hover:translate-y-0 transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]"
+                style={{ transform: 'translateZ(50px)' }}
+            >
+                <h3 className="text-[#0B5C8A] text-2xl font-bold font-['Plus_Jakarta_Sans'] leading-tight mb-2">{plot.title}</h3>
+                <div className="flex items-center text-[#0B5C8A]/70 text-sm font-medium mb-6">
+                    <MapPin size={14} className="mr-1.5" /> {plot.location}
                 </div>
 
-                {/* View Details Slide Up */}
-                <motion.div
-                    variants={{ hover: { y: 0, opacity: 1 } }}
-                    initial={{ y: 20, opacity: 0 }}
-                    transition={{ duration: 0.3, ease: 'easeOut' }}
-                    style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(27,79,138,0.7) 0%, transparent 60%)', display: 'flex', alignItems: 'flex-end', padding: 20 }}
-                >
-                    <div style={{ width: '100%', background: '#fff', color: '#1B4F8A', padding: '10px', textAlign: 'center', borderRadius: 8, fontWeight: 700, fontSize: 13, transform: 'translateY(10px)', opacity: 0.9 }}>
-                        View Full Details
+                <div className="flex items-end justify-between border-t border-gray-100 pt-6">
+                    <div>
+                        <div className="text-[#0B5C8A]/60 text-xs font-bold uppercase tracking-wider mb-1">Specs</div>
+                        <div className="text-[#0B5C8A] font-bold flex items-center gap-1.5">
+                            <Maximize size={16} /> {plot.area}
+                        </div>
                     </div>
-                </motion.div>
-            </div>
-
-            {/* Content */}
-            <div style={{ padding: '20px 20px 24px', display: 'flex', flexDirection: 'column', flex: 1 }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 5, color: '#6B7280', fontSize: 13, marginBottom: 8 }}>
-                    <MapPin size={13} style={{ color: '#E63329', flexShrink: 0 }} />
-                    {plot.location}, Thrissur
+                    <div className="text-right">
+                        <div className="text-[#0B5C8A]/60 text-xs font-bold uppercase tracking-wider mb-1">Investment</div>
+                        <div className="text-[#D33C29] text-2xl font-bold font-['Plus_Jakarta_Sans']">
+                            {plot.price}
+                        </div>
+                    </div>
                 </div>
-                <h3 style={{ fontSize: 17, fontWeight: 700, color: '#111827', lineHeight: 1.3, marginBottom: 12, flex: 1 }}>{plot.title}</h3>
-
-                <div style={{ display: 'flex', alignItems: 'baseline', gap: 6, marginBottom: 16 }}>
-                    <span style={{ fontSize: 26, fontWeight: 800, color: '#1B4F8A', lineHeight: 1 }}>₹{plot.price}L</span>
-                    <span style={{ fontSize: 13, color: '#9CA3AF' }}>/ cent</span>
-                    <span style={{ marginLeft: 'auto', fontSize: 13, color: '#6B7280', fontWeight: 600 }}>
-                        Total ≈ ₹{(plot.price * plot.size).toFixed(0)}L
-                    </span>
-                </div>
-
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingTop: 14, borderTop: '1px solid #F3F4F6' }}>
-                    <span style={{ display: 'flex', alignItems: 'center', gap: 5, fontSize: 13, color: '#6B7280' }}>
-                        <Maximize2 size={13} style={{ color: '#2C9BE8' }} />
-                        {plot.size} {plot.sizeUnit}
-                    </span>
-                    <span style={{ fontSize: 13, color: '#6B7280' }}>{plot.roadAccess}</span>
-                </div>
-            </div>
+            </motion.div>
         </motion.div>
     );
 }
 
 export default function FeaturedPlots() {
-    const featured = plots.filter(p => p.featured).slice(0, 3);
-    return (
-        <section style={{ paddingTop: 96, paddingBottom: 96, background: '#F9FAFB' }}>
-            <div className="container-site">
-                <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', marginBottom: 52, flexWrap: 'wrap', gap: 16 }}>
-                    <div>
-                        <FadeIn><div className="tag" style={{ marginBottom: 14 }}>Featured Listings</div></FadeIn>
-                        <FadeIn delay={0.1}>
-                            <h2 style={{ fontFamily: '"Cormorant Garamond", Georgia, serif', fontSize: 'clamp(2rem,4vw,2.8rem)', fontWeight: 900, color: '#111827', lineHeight: 1.2 }}>
-                                Exclusive Plots,<br /><em style={{ color: '#1B4F8A', fontStyle: 'italic' }}>Handpicked for You</em>
-                            </h2>
-                        </FadeIn>
-                    </div>
-                    <FadeIn delay={0.15} direction="left">
-                        <Link href="/plots" className="btn btn-outline-navy" style={{ fontWeight: 600 }}>
-                            View All Plots <ArrowRight size={15} />
-                        </Link>
-                    </FadeIn>
-                </div>
+    const containerRef = useRef(null);
+    const { scrollYProgress } = useScroll({
+        target: containerRef,
+        offset: ['start end', 'end start'] // When the section enters/leaves the viewport
+    });
 
+    // Translate the grid horizontally as the user scrolls down vertically
+    // This gives the "horizontal scroll" effect while continuing to scroll down
+    const xTransform = useTransform(scrollYProgress, [0, 1], ['0%', '-40%']);
+
+    return (
+        <section ref={containerRef} className="py-32 bg-[#F9FAFB] overflow-hidden">
+            <div className="container-site mb-16">
                 <motion.div
-                    variants={containerVariants}
-                    initial="hidden"
-                    whileInView="show"
-                    viewport={{ once: true, margin: "-100px" }}
-                    style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: 24 }}
+                    initial={{ opacity: 0, y: 30 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, margin: '-10% 0px' }}
+                    transition={{ duration: 0.8 }}
                 >
-                    {featured.map((plot) => (
-                        <Link key={plot.id} href={`/plots/${plot.id}`} style={{ textDecoration: 'none' }}>
-                            <PlotCard plot={plot} />
-                        </Link>
+                    <div className="flex items-center gap-3 mb-4">
+                        <span className="w-4 h-[2px] bg-[#D33C29]" />
+                        <span className="text-[#D33C29] text-[11px] font-bold uppercase tracking-[0.2em]">Featured Portfolio</span>
+                    </div>
+                    <div className="flex flex-col md:flex-row md:items-end justify-between gap-8">
+                        <h2 className="text-[#0B5C8A] text-4xl md:text-6xl font-extrabold font-['Plus_Jakarta_Sans'] leading-tight max-w-2xl">
+                            The Avant-Garde <br />Collection
+                        </h2>
+                        <a href="/plots" className="inline-flex items-center gap-2 text-[#0B5C8A] font-bold text-sm uppercase tracking-widest hover:text-[#D33C29] transition-colors relative group">
+                            View All Properties <ExternalLink size={16} />
+                            <span className="absolute -bottom-2 left-0 right-0 h-[2px] bg-[#D33C29] scale-x-0 group-hover:scale-x-100 transition-transform origin-left ease-out" />
+                        </a>
+                    </div>
+                </motion.div>
+            </div>
+
+            {/* Horizontal Drag/Scroll Track */}
+            <div className="pl-[max(24px,calc((100vw-1200px)/2))]">
+                <motion.div
+                    style={{ x: xTransform }}
+                    className="flex gap-8 pr-[20vw]"
+                >
+                    {PLOTS.map(plot => (
+                        <TiltCard key={plot.id} plot={plot} />
                     ))}
                 </motion.div>
             </div>

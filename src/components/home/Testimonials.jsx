@@ -1,123 +1,130 @@
 'use client';
-import { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Star, ChevronLeft, ChevronRight, Quote } from 'lucide-react';
-import { testimonials } from '@/lib/data';
-import FadeIn from '@/components/FadeIn';
+import { useRef, useState, useEffect } from 'react';
+import { motion, useInView } from 'framer-motion';
+import { Play } from 'lucide-react';
 
-export default function Testimonials() {
-    const [active, setActive] = useState(0);
-    const [dir, setDir] = useState(1);
+const VLOGS = [
+    { id: 1, name: 'Rahul & Priya', role: 'NRI Investors', video: '/videos/thrissur-culture.mp4', poster: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=600&q=80', description: 'Bought a 20-cent premium plot in Ollur remotely.' },
+    { id: 2, name: 'Dr. Mathews', role: 'Surgeon', video: '/videos/thrissur-culture.mp4', poster: 'https://images.unsplash.com/photo-1560250097-0b93528c311a?w=600&q=80', description: 'Invested in the Cultural Corridor for a future clinic.' },
+    { id: 3, name: 'Sneha Menon', role: 'Tech Entrepreneur', video: '/videos/thrissur-culture.mp4', poster: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?w=600&q=80', description: 'Found the perfect generational wealth asset.' },
+    { id: 4, name: 'Anil Kumar', role: 'Business Owner', video: '/videos/thrissur-culture.mp4', poster: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&q=80', description: 'Secured a high-ROI commercial space.' },
+];
+
+function VlogCard({ vlog }) {
+    const videoRef = useRef(null);
+    const [isHovered, setIsHovered] = useState(false);
 
     useEffect(() => {
-        const t = setInterval(() => { setDir(1); setActive(p => (p + 1) % testimonials.length); }, 5000);
-        return () => clearInterval(t);
-    }, []);
-
-    const go = (d) => {
-        setDir(d);
-        setActive(p => (p + d + testimonials.length) % testimonials.length);
-    };
-
-    const handleDragEnd = (e, { offset, velocity }) => {
-        const swipe = offset.x;
-        // If they drag far enough or fast enough
-        if (swipe < -40 || velocity.x < -400) {
-            go(1); // Swipe left -> next
-        } else if (swipe > 40 || velocity.x > 400) {
-            go(-1); // Swipe right -> prev
+        if (!videoRef.current) return;
+        if (isHovered) {
+            videoRef.current.play().catch(() => { });
+        } else {
+            videoRef.current.pause();
+            videoRef.current.currentTime = 0;
         }
-    };
-
-    const t = testimonials[active];
+    }, [isHovered]);
 
     return (
-        <section style={{ background: '#F9FAFB', paddingTop: 96, paddingBottom: 96 }}>
-            <div className="container-site">
-                {/* Header */}
-                <div style={{ textAlign: 'center', marginBottom: 56 }}>
-                    <FadeIn><div className="tag" style={{ justifyContent: 'center', marginBottom: 14 }}>Client Stories</div></FadeIn>
-                    <FadeIn delay={0.1}>
-                        <h2 style={{ fontFamily: '"Cormorant Garamond", Georgia, serif', fontSize: 'clamp(2rem,4vw,2.8rem)', fontWeight: 900, color: '#111827', lineHeight: 1.25 }}>
-                            What Our Clients <em style={{ color: '#1B4F8A' }}>Say About Us</em>
-                        </h2>
-                    </FadeIn>
+        <motion.div
+            className="flex-shrink-0 w-[300px] md:w-[380px] group cursor-pointer"
+            onMouseEnter={() => setIsHovered(true)}
+            onMouseLeave={() => setIsHovered(false)}
+        >
+            {/* High-end streaming thumbnail */}
+            <div className="relative aspect-[4/5] rounded-3xl overflow-hidden bg-[#042e4b] mb-6 shadow-[0_10px_40px_rgba(0,0,0,0.3)] group-hover:shadow-[0_20px_60px_rgba(211,60,41,0.2)] transition-shadow duration-500">
+                {/* Poster Image */}
+                <motion.div
+                    animate={{ opacity: isHovered ? 0 : 1 }}
+                    transition={{ duration: 0.3 }}
+                    className="absolute inset-0 z-10"
+                >
+                    <img src={vlog.poster} alt={vlog.name} className="w-full h-full object-cover" />
+                </motion.div>
+
+                {/* Autoplaying muted video on hover */}
+                <video
+                    ref={videoRef}
+                    muted loop playsInline
+                    className="absolute inset-0 w-full h-full object-cover z-0"
+                >
+                    <source src={vlog.video} type="video/mp4" />
+                </video>
+
+                {/* Dark Gradient Overlay */}
+                <div className="absolute inset-0 bg-gradient-to-t from-[#0B5C8A] via-transparent to-transparent opacity-80 z-20" />
+
+                {/* Play Button Icon */}
+                <div className="absolute inset-0 flex items-center justify-center z-30">
+                    <motion.div
+                        animate={{ scale: isHovered ? 1.1 : 1, backgroundColor: isHovered ? '#D33C29' : 'rgba(255,255,255,0.2)' }}
+                        className="w-16 h-16 rounded-full backdrop-blur-md flex items-center justify-center border border-white/30 transition-colors duration-300"
+                    >
+                        <Play fill="#fff" color="#fff" size={24} className="ml-1" />
+                    </motion.div>
                 </div>
 
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 2fr', gap: 32, alignItems: 'center', maxWidth: 960, margin: '0 auto' }}>
-                    {/* Avatar column */}
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-                        {testimonials.map((tes, i) => (
-                            <button
-                                key={tes.id}
-                                onClick={() => { setDir(i > active ? 1 : -1); setActive(i); }}
-                                style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '12px 16px', borderRadius: 10, border: `2px solid ${i === active ? '#1B4F8A' : 'transparent'}`, background: i === active ? '#EBF5FD' : '#fff', cursor: 'pointer', transition: 'all 0.2s', textAlign: 'left', boxShadow: i === active ? '0 4px 16px rgba(27,79,138,0.12)' : 'none' }}
-                            >
-                                <img src={tes.avatar} alt={tes.name} style={{ width: 44, height: 44, borderRadius: '50%', objectFit: 'cover', flexShrink: 0, border: `2px solid ${i === active ? '#1B4F8A' : '#E5E7EB'}` }} />
-                                <div>
-                                    <div style={{ fontSize: 14, fontWeight: 700, color: i === active ? '#1B4F8A' : '#374151' }}>{tes.name}</div>
-                                    <div style={{ fontSize: 12, color: '#9CA3AF' }}>{tes.role}</div>
-                                </div>
-                            </button>
-                        ))}
-                    </div>
-
-                    {/* Testimonial card */}
-                    <div style={{ position: 'relative', minHeight: 280, overflow: 'hidden' }}>
-                        <AnimatePresence mode="wait" custom={dir}>
-                            <motion.div
-                                key={active}
-                                custom={dir}
-                                initial={{ opacity: 0, x: dir * 60 }}
-                                animate={{ opacity: 1, x: 0 }}
-                                exit={{ opacity: 0, x: -dir * 60 }}
-                                transition={{ duration: 0.42, ease: [0.25, 0.46, 0.45, 0.94] }}
-                                drag="x"
-                                dragConstraints={{ left: 0, right: 0 }}
-                                dragElastic={0.8}
-                                onDragEnd={handleDragEnd}
-                                whileTap={{ cursor: 'grabbing' }}
-                                style={{ background: '#fff', borderRadius: 16, padding: 36, boxShadow: '0 4px 32px rgba(27,79,138,0.1)', border: '1px solid #E5E7EB', cursor: 'grab', touchAction: 'none' }}
-                            >
-                                {/* Quote icon */}
-                                <div style={{ width: 48, height: 48, borderRadius: '50%', background: '#EBF5FD', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 20 }}>
-                                    <Quote size={22} style={{ color: '#1B4F8A' }} />
-                                </div>
-
-                                {/* Stars */}
-                                <div style={{ display: 'flex', gap: 3, marginBottom: 16 }}>
-                                    {Array(5).fill(0).map((_, i) => (
-                                        <Star key={i} size={16} style={{ color: '#D4A843', fill: '#D4A843' }} />
-                                    ))}
-                                </div>
-
-                                <p style={{ fontSize: 16, color: '#374151', lineHeight: 1.85, marginBottom: 24, fontStyle: 'italic' }}>"{t.text}"</p>
-
-                                <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
-                                    <img src={t.avatar} alt={t.name} style={{ width: 52, height: 52, borderRadius: '50%', objectFit: 'cover', border: '3px solid #1B4F8A' }} />
-                                    <div>
-                                        <div style={{ fontSize: 16, fontWeight: 700, color: '#111827' }}>{t.name}</div>
-                                        <div style={{ fontSize: 13, color: '#9CA3AF' }}>{t.role} · {t.location}</div>
-                                    </div>
-                                </div>
-                            </motion.div>
-                        </AnimatePresence>
-
-                        {/* Prev/Next */}
-                        <div style={{ position: 'absolute', bottom: 24, right: 20, display: 'flex', gap: 8 }}>
-                            {[{ d: -1, Icon: ChevronLeft }, { d: 1, Icon: ChevronRight }].map(({ d, Icon }) => (
-                                <button key={d} onClick={() => go(d)}
-                                    style={{ width: 38, height: 38, borderRadius: '50%', border: '1.5px solid #E5E7EB', background: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', transition: 'all 0.2s' }}
-                                    onMouseEnter={e => { e.currentTarget.style.background = '#1B4F8A'; e.currentTarget.style.borderColor = '#1B4F8A'; e.currentTarget.querySelector('svg').setAttribute('color', '#fff'); }}
-                                    onMouseLeave={e => { e.currentTarget.style.background = '#fff'; e.currentTarget.style.borderColor = '#E5E7EB'; e.currentTarget.querySelector('svg').setAttribute('color', '#374151'); }}
-                                >
-                                    <Icon size={18} color="#374151" />
-                                </button>
-                            ))}
-                        </div>
-                    </div>
+                {/* Inner Text content resting on the bottom of the card */}
+                <div className="absolute bottom-6 left-6 right-6 z-30 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500 ease-out">
+                    <h3 className="text-white text-2xl font-bold font-['Plus_Jakarta_Sans']">{vlog.name}</h3>
+                    <p className="text-[#D33C29] text-xs font-bold uppercase tracking-wider mt-1">{vlog.role}</p>
+                    <motion.p
+                        animate={{ opacity: isHovered ? 1 : 0, height: isHovered ? 'auto' : 0, marginTop: isHovered ? 12 : 0 }}
+                        className="text-white/80 text-sm font-medium leading-relaxed"
+                    >
+                        {vlog.description}
+                    </motion.p>
                 </div>
             </div>
+        </motion.div>
+    );
+}
+
+export default function Testimonials() {
+    const ref = useRef(null);
+    const inView = useInView(ref, { once: true, margin: '-10% 0px' });
+
+    return (
+        <section ref={ref} className="py-32 bg-[#0B5C8A] overflow-hidden">
+            <div className="container-site mb-16">
+                <motion.div
+                    initial={{ opacity: 0, y: 30 }}
+                    animate={inView ? { opacity: 1, y: 0 } : {}}
+                    transition={{ duration: 0.8 }}
+                    className="flex flex-col md:flex-row md:items-end justify-between gap-8"
+                >
+                    <div>
+                        <div className="flex items-center gap-3 mb-4">
+                            <span className="w-8 h-[2px] bg-[#D33C29]" />
+                            <span className="text-[#D33C29] text-[11px] font-bold uppercase tracking-[0.2em]">The Social Proof</span>
+                        </div>
+                        <h2 className="text-white text-4xl md:text-5xl lg:text-6xl font-extrabold font-['Plus_Jakarta_Sans'] leading-tight">
+                            Client Journals
+                        </h2>
+                    </div>
+                    <p className="text-white/70 max-w-sm font-medium leading-relaxed">
+                        Hear directly from the individuals and families who trusted us to find their legacy in Thrissur.
+                    </p>
+                </motion.div>
+            </div>
+
+            {/* Horizontal Streaming Carousel */}
+            <div className="pl-[max(24px,calc((100vw-1200px)/2))] pb-10 overflow-x-auto hide-scrollbar cursor-grab active:cursor-grabbing">
+                <motion.div
+                    initial={{ opacity: 0, x: 50 }}
+                    animate={inView ? { opacity: 1, x: 0 } : {}}
+                    transition={{ duration: 1, delay: 0.2, ease: "easeOut" }}
+                    className="flex gap-8 pr-[20vw]"
+                >
+                    {VLOGS.map(vlog => (
+                        <VlogCard key={vlog.id} vlog={vlog} />
+                    ))}
+                </motion.div>
+            </div>
+
+            <style>{`
+                .hide-scrollbar::-webkit-scrollbar { display: none; }
+                .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+            `}</style>
         </section>
     );
 }
