@@ -126,7 +126,7 @@ export default function Highlights() {
                         <motion.div
                             key={item.id}
                             variants={itemVariants}
-                            className={`rounded-3xl p-8 lg:p-12 flex flex-col justify-between ${item.bg} ${item.span} shadow-sm hover:shadow-xl transition-shadow duration-500 border border-[#E5E7EB]/50`}
+                            className={`rounded-3xl p-6 md:p-8 lg:p-12 flex flex-col justify-between ${item.bg} ${item.span} shadow-sm hover:shadow-xl transition-shadow duration-500 border border-[#E5E7EB]/50`}
                         >
                             <div className="flex justify-between items-start mb-8">
                                 <div className={`w-14 h-14 rounded-full flex items-center justify-center ${item.bg === 'bg-[#0B5C8A]' ? 'bg-white/10' : 'bg-[#F3F4F6]'}`}>

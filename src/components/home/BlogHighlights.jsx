@@ -17,25 +17,25 @@ export default function BlogHighlights() {
     };
 
     return (
-        <section ref={ref} style={{ padding: '120px 0', background: '#F9FAFB', borderTop: '1px solid #E5E7EB', borderBottom: '1px solid #E5E7EB' }}>
+        <section ref={ref} className="py-24 md:py-32 bg-[#F9FAFB] border-y border-gray-200">
             <div className="container-site">
 
                 {/* Minimalist Editorial Header */}
-                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', marginBottom: 80 }}>
-                    <motion.div initial={{ height: 0 }} animate={inView ? { height: 40 } : {}} transition={{ duration: 0.8 }} style={{ width: 1, background: '#D33C29', marginBottom: 24 }} />
+                <div className="flex flex-col items-center text-center mb-16 md:mb-24">
+                    <motion.div initial={{ height: 0 }} animate={inView ? { height: 40 } : {}} transition={{ duration: 0.8 }} className="w-[1px] bg-[#D33C29] mb-6" />
                     <motion.h2
                         initial={{ opacity: 0, y: 10 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ delay: 0.4 }}
-                        style={{ fontFamily: '"Cormorant Garamond", Georgia, serif', fontSize: 'clamp(2.5rem, 4vw, 3.5rem)', color: '#111827', fontWeight: 600, letterSpacing: '-0.02em', fontStyle: 'italic' }}
+                        className="font-['Cormorant_Garamond'] text-4xl md:text-5xl lg:text-6xl text-gray-900 font-semibold tracking-tight italic"
                     >
                         Market Intelligence
                     </motion.h2>
-                    <motion.div initial={{ opacity: 0 }} animate={inView ? { opacity: 1 } : {}} transition={{ delay: 0.6 }} style={{ fontSize: 13, textTransform: 'uppercase', letterSpacing: '0.15em', fontWeight: 700, color: '#9CA3AF', marginTop: 16 }}>
+                    <motion.div initial={{ opacity: 0 }} animate={inView ? { opacity: 1 } : {}} transition={{ delay: 0.6 }} className="text-[13px] uppercase tracking-[0.15em] font-bold text-gray-400 mt-4">
                         The Archive
                     </motion.div>
                 </div>
 
                 {/* The Archive Grid — Pure Typography */}
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: 60 }}>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12 lg:gap-16">
                     {blogPosts.slice(0, 3).map((post, i) => {
                         const date = formatDateObj(post.date);
                         return (
@@ -44,34 +44,34 @@ export default function BlogHighlights() {
                                 initial={{ opacity: 0, y: 30 }}
                                 animate={inView ? { opacity: 1, y: 0 } : {}}
                                 transition={{ duration: 0.8, delay: 0.4 + i * 0.15, ease: [0.16, 1, 0.3, 1] }}
-                                style={{ display: 'flex', flexDirection: 'column' }}
+                                className="flex flex-col"
                             >
                                 {/* Date Box */}
-                                <div style={{ display: 'flex', alignItems: 'flex-start', gap: 16, marginBottom: 24, paddingBottom: 24, borderBottom: '1px solid #E5E7EB' }}>
-                                    <div style={{ fontFamily: '"Cormorant Garamond", Georgia, serif', fontSize: '4.5rem', lineHeight: 0.8, fontWeight: 700, color: '#D33C29' }}>
+                                <div className="flex items-start gap-4 mb-6 pb-6 border-b border-gray-200">
+                                    <div className="font-['Cormorant_Garamond'] text-5xl md:text-[4.5rem] leading-[0.8] font-bold text-[#D33C29]">
                                         {date.day}
                                     </div>
-                                    <div style={{ paddingTop: 6 }}>
-                                        <div style={{ fontSize: 11, fontWeight: 800, color: '#111827', textTransform: 'uppercase', letterSpacing: '0.1em' }}>{date.my}</div>
-                                        <div style={{ fontSize: 11, fontWeight: 700, color: '#9CA3AF', textTransform: 'uppercase', letterSpacing: '0.05em', marginTop: 4 }}>{post.readTime} Read</div>
+                                    <div className="pt-1 md:pt-2">
+                                        <div className="text-[11px] font-extrabold text-gray-900 uppercase tracking-widest">{date.my}</div>
+                                        <div className="text-[11px] font-bold text-gray-400 uppercase tracking-wider mt-1">{post.readTime.replace(/read/i, '').trim()} Read</div>
                                     </div>
                                 </div>
 
                                 {/* Content */}
-                                <div style={{ flex: 1 }}>
-                                    <div style={{ fontSize: 11, fontWeight: 800, color: '#0B5C8A', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: 12 }}>{post.category}</div>
-                                    <h3 style={{ fontFamily: '"Cormorant Garamond", Georgia, serif', fontSize: '1.75rem', fontWeight: 700, color: '#111827', lineHeight: 1.25, marginBottom: 16 }}>
+                                <div className="flex-1">
+                                    <div className="text-[11px] font-extrabold text-[#0B5C8A] uppercase tracking-widest mb-3">{post.category}</div>
+                                    <h3 className="font-['Cormorant_Garamond'] text-2xl md:text-3xl font-bold text-gray-900 leading-snug mb-4">
                                         {post.title}
                                     </h3>
-                                    <p style={{ fontSize: 14, color: '#6B7280', lineHeight: 1.7 }}>
+                                    <p className="text-sm text-gray-500 leading-relaxed">
                                         {post.excerpt}
                                     </p>
                                 </div>
 
                                 {/* Link */}
-                                <div style={{ marginTop: 32 }}>
-                                    <a href={`/blog/${post.slug}`} style={{ display: 'inline-flex', alignItems: 'center', gap: 8, fontSize: 12, fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.1em', color: '#111827', textDecoration: 'none', transition: 'color 0.2s' }} onMouseOver={e => e.currentTarget.style.color = '#D33C29'} onMouseOut={e => e.currentTarget.style.color = '#111827'}>
-                                        Read Dispatch <span style={{ fontFamily: 'system-ui', fontSize: 16 }}>→</span>
+                                <div className="mt-8">
+                                    <a href={`/blog/${post.slug}`} className="inline-flex items-center gap-2 text-[12px] font-extrabold uppercase tracking-widest text-gray-900 hover:text-[#D33C29] transition-colors">
+                                        Read Dispatch <span className="font-sans text-base">→</span>
                                     </a>
                                 </div>
                             </motion.article>
@@ -79,8 +79,8 @@ export default function BlogHighlights() {
                     })}
                 </div>
 
-                <motion.div initial={{ opacity: 0 }} animate={inView ? { opacity: 1 } : {}} transition={{ delay: 1 }} style={{ textAlign: 'center', marginTop: 80 }}>
-                    <a href="/blog" style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', padding: '16px 36px', border: '1px solid #111827', color: '#111827', fontWeight: 700, fontSize: 13, textTransform: 'uppercase', letterSpacing: '0.1em', transition: 'all 0.3s', textDecoration: 'none' }} onMouseOver={e => { e.currentTarget.style.background = '#111827'; e.currentTarget.style.color = '#fff'; }} onMouseOut={e => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = '#111827'; }}>
+                <motion.div initial={{ opacity: 0 }} animate={inView ? { opacity: 1 } : {}} transition={{ delay: 1 }} className="text-center mt-16 md:mt-24">
+                    <a href="/blog" className="inline-flex items-center justify-center px-8 py-4 border border-gray-900 text-gray-900 font-bold text-[13px] uppercase tracking-widest hover:bg-gray-900 hover:text-white transition-colors">
                         Enter The Archive
                     </a>
                 </motion.div>

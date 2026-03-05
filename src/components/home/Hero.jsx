@@ -111,24 +111,17 @@ export default function Hero() {
                 initial={{ y: 80, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ duration: 1, delay: 1.2, type: 'spring', stiffness: 50, damping: 20 }}
-                style={{
-                    position: 'absolute', bottom: 60, left: '50%', transform: 'translateX(-50%)', zIndex: 20,
-                    width: 'min(90vw, 900px)',
-                    background: 'rgba(255,255,255,0.92)', backdropFilter: 'blur(24px)',
-                    borderRadius: 40, padding: '12px 12px 12px 40px',
-                    boxShadow: '0 40px 80px rgba(11,92,138,0.3)',
-                    display: 'flex', alignItems: 'center'
-                }}
+                className="absolute bottom-8 md:bottom-16 left-1/2 -translate-x-1/2 z-20 w-[92vw] max-w-[900px] bg-white/92 backdrop-blur-[24px] rounded-3xl md:rounded-[40px] p-6 pb-6 md:p-3 md:pl-10 shadow-[0_40px_80px_rgba(11,92,138,0.3)] flex flex-col md:flex-row items-center gap-6 md:gap-0"
             >
                 {/* Search Options Data Wrapper */}
-                <div style={{ flex: 1, display: 'flex', alignItems: 'center', gap: 24, paddingRight: 24 }} className="search-fields-wrapper">
+                <div className="flex-1 flex flex-col md:flex-row items-center gap-4 md:gap-6 w-full md:pr-6">
 
                     {/* Location Field */}
-                    <div className="search-field" style={{ flex: 1, display: 'flex', alignItems: 'center', borderRight: '1px solid #E5E7EB', paddingRight: 16 }}>
-                        <MapPin size={20} style={{ color: '#0B5C8A', marginRight: 16, strokeWidth: 2.5 }} />
-                        <div style={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
-                            <span style={{ fontSize: 10, fontWeight: 800, color: '#D33C29', textTransform: 'uppercase', letterSpacing: '0.1em' }}>Location</span>
-                            <select style={{ width: '100%', background: 'transparent', border: 'none', outline: 'none', fontSize: 15, fontWeight: 700, color: '#111827', cursor: 'pointer', appearance: 'none', padding: '4px 0 0 0' }}>
+                    <div className="flex-1 flex flex-row items-center border-b md:border-b-0 md:border-r border-gray-200 pb-3 md:pb-0 md:pr-4 w-full">
+                        <MapPin size={20} className="text-[#0B5C8A] mr-4 drop-shadow-sm" style={{ strokeWidth: 2.5 }} />
+                        <div className="flex flex-col flex-1">
+                            <span className="text-[10px] font-extrabold text-[#D33C29] uppercase tracking-widest">Location</span>
+                            <select className="w-full bg-transparent border-none outline-none text-[15px] font-bold text-gray-900 cursor-pointer appearance-none pt-1">
                                 <option>Thrissur City</option>
                                 <option>Punkunnam</option>
                                 <option>Ollur</option>
@@ -137,11 +130,11 @@ export default function Hero() {
                     </div>
 
                     {/* Property Type Field */}
-                    <div className="search-field" style={{ flex: 1, display: 'flex', alignItems: 'center', borderRight: '1px solid #E5E7EB', paddingRight: 16 }}>
-                        <Home size={20} style={{ color: '#0B5C8A', marginRight: 16, strokeWidth: 2.5 }} />
-                        <div style={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
-                            <span style={{ fontSize: 10, fontWeight: 800, color: '#D33C29', textTransform: 'uppercase', letterSpacing: '0.1em' }}>Property Type</span>
-                            <select style={{ width: '100%', background: 'transparent', border: 'none', outline: 'none', fontSize: 15, fontWeight: 700, color: '#111827', cursor: 'pointer', appearance: 'none', padding: '4px 0 0 0' }}>
+                    <div className="flex-1 flex flex-row items-center border-b md:border-b-0 md:border-r border-gray-200 pb-3 md:pb-0 md:pr-4 w-full">
+                        <Home size={20} className="text-[#0B5C8A] mr-4 drop-shadow-sm" style={{ strokeWidth: 2.5 }} />
+                        <div className="flex flex-col flex-1">
+                            <span className="text-[10px] font-extrabold text-[#D33C29] uppercase tracking-widest">Property Type</span>
+                            <select className="w-full bg-transparent border-none outline-none text-[15px] font-bold text-gray-900 cursor-pointer appearance-none pt-1">
                                 <option>Premium Villa</option>
                                 <option>Residential Plot</option>
                                 <option>Commercial Segment</option>
@@ -150,11 +143,11 @@ export default function Hero() {
                     </div>
 
                     {/* Budget Field */}
-                    <div className="search-field" style={{ flex: 1, display: 'flex', alignItems: 'center' }}>
-                        <Coins size={20} style={{ color: '#0B5C8A', marginRight: 16, strokeWidth: 2.5 }} />
-                        <div style={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
-                            <span style={{ fontSize: 10, fontWeight: 800, color: '#D33C29', textTransform: 'uppercase', letterSpacing: '0.1em' }}>Budget Range</span>
-                            <select style={{ width: '100%', background: 'transparent', border: 'none', outline: 'none', fontSize: 15, fontWeight: 700, color: '#111827', cursor: 'pointer', appearance: 'none', padding: '4px 0 0 0' }}>
+                    <div className="flex-1 flex flex-row items-center w-full">
+                        <Coins size={20} className="text-[#0B5C8A] mr-4 drop-shadow-sm" style={{ strokeWidth: 2.5 }} />
+                        <div className="flex flex-col flex-1">
+                            <span className="text-[10px] font-extrabold text-[#D33C29] uppercase tracking-widest">Budget Range</span>
+                            <select className="w-full bg-transparent border-none outline-none text-[15px] font-bold text-gray-900 cursor-pointer appearance-none pt-1">
                                 <option>₹50L - ₹1Cr</option>
                                 <option>₹1Cr - ₹3Cr</option>
                                 <option>₹3Cr+</option>
@@ -165,39 +158,12 @@ export default function Hero() {
                 </div>
 
                 {/* Engaging Magnetic Orange Button */}
-                <MagneticButton onClick={() => window.location.href = '/plots'}>
-                    <Search size={24} style={{ strokeWidth: 3 }} />
-                </MagneticButton>
+                <div className="w-full md:w-auto flex justify-center mt-2 md:mt-0">
+                    <MagneticButton onClick={() => window.location.href = '/plots'}>
+                        <Search size={24} style={{ strokeWidth: 3 }} />
+                    </MagneticButton>
+                </div>
             </motion.div>
-
-            <style>{`
-                @media (max-width: 900px) {
-                    section > div:nth-child(4) { 
-                        flex-direction: column !important; 
-                        border-radius: 24px !important;
-                        padding: 24px !important;
-                        gap: 24px !important;
-                        bottom: 30px !important;
-                    }
-                    .search-fields-wrapper { 
-                        flex-direction: column !important; 
-                        width: 100% !important; 
-                        padding-right: 0 !important;
-                        gap: 16px !important;
-                    }
-                    .search-field {
-                        width: 100% !important;
-                        border-right: none !important;
-                        border-bottom: 1px solid #E5E7EB !important;
-                        padding-bottom: 12px !important;
-                        padding-right: 0 !important;
-                    }
-                    .search-field:last-child {
-                        border-bottom: none !important;
-                        padding-bottom: 0 !important;
-                    }
-                }
-            `}</style>
         </section>
     );
 }

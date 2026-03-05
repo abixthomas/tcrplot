@@ -4,10 +4,10 @@ import { motion, useInView } from 'framer-motion';
 import { Play } from 'lucide-react';
 
 const VLOGS = [
-    { id: 1, name: 'Rahul & Priya', role: 'NRI Investors', video: '/videos/thrissur-culture.mp4', poster: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=600&q=80', description: 'Bought a 20-cent premium plot in Ollur remotely.' },
-    { id: 2, name: 'Dr. Mathews', role: 'Surgeon', video: '/videos/thrissur-culture.mp4', poster: 'https://images.unsplash.com/photo-1560250097-0b93528c311a?w=600&q=80', description: 'Invested in the Cultural Corridor for a future clinic.' },
-    { id: 3, name: 'Sneha Menon', role: 'Tech Entrepreneur', video: '/videos/thrissur-culture.mp4', poster: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?w=600&q=80', description: 'Found the perfect generational wealth asset.' },
-    { id: 4, name: 'Anil Kumar', role: 'Business Owner', video: '/videos/thrissur-culture.mp4', poster: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&q=80', description: 'Secured a high-ROI commercial space.' },
+    { id: 1, name: 'Rahul & Priya', role: 'NRI Investors', video: 'https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4', poster: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=600&q=80', description: 'Bought a 20-cent premium plot in Ollur remotely.' },
+    { id: 2, name: 'Dr. Mathews', role: 'Surgeon', video: 'https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4', poster: 'https://images.unsplash.com/photo-1560250097-0b93528c311a?w=600&q=80', description: 'Invested in the Cultural Corridor for a future clinic.' },
+    { id: 3, name: 'Sneha Menon', role: 'Tech Entrepreneur', video: 'https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4', poster: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?w=600&q=80', description: 'Found the perfect generational wealth asset.' },
+    { id: 4, name: 'Anil Kumar', role: 'Business Owner', video: 'https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4', poster: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&q=80', description: 'Secured a high-ROI commercial space.' },
 ];
 
 function VlogCard({ vlog }) {
@@ -26,7 +26,7 @@ function VlogCard({ vlog }) {
 
     return (
         <motion.div
-            className="flex-shrink-0 w-[300px] md:w-[380px] group cursor-pointer"
+            className="flex-shrink-0 w-[85vw] max-w-[320px] md:max-w-none md:w-[380px] group cursor-pointer"
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
         >

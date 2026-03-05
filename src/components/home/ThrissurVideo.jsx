@@ -1,10 +1,18 @@
 'use client';
-import { useRef } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import { motion, useScroll, useTransform, useSpring } from 'framer-motion';
 import { Play } from 'lucide-react';
 
 export default function ThrissurVideo() {
     const containerRef = useRef(null);
+    const [isMobile, setIsMobile] = useState(false);
+
+    useEffect(() => {
+        const checkMobile = () => setIsMobile(window.innerWidth < 900);
+        checkMobile();
+        window.addEventListener('resize', checkMobile);
+        return () => window.removeEventListener('resize', checkMobile);
+    }, []);
 
     // Track scroll over a 300vh sticky area
     const { scrollYProgress } = useScroll({
@@ -16,9 +24,9 @@ export default function ThrissurVideo() {
     const smoothProgress = useSpring(scrollYProgress, { stiffness: 60, damping: 20, restDelta: 0.001 });
 
     // ── Phase 1: Video expands from RHS card to full 100vw x 100vh ──
-    // Inset starting values: Top Right Bottom Left
-    // Starting approx as a 60% width card on the right side
-    const clipStart = 'inset(10% 5% 10% 45% round 24px)';
+    const clipStart = isMobile
+        ? 'inset(55% 5% 5% 5% round 24px)'
+        : 'inset(10% 5% 10% 45% round 24px)';
 
     // Shrink inset to 0
     const clipPath = useTransform(smoothProgress, [0, 0.4], [clipStart, 'inset(0% 0% 0% 0% round 0px)']);
@@ -43,9 +51,14 @@ export default function ThrissurVideo() {
                 {/* 1. Initial Left-Side Typography */}
                 <motion.div
                     style={{
-                        position: 'absolute', left: '8%', width: '35%',
+                        position: 'absolute',
+                        left: isMobile ? '5%' : '8%',
+                        top: isMobile ? '10%' : 'auto',
+                        width: isMobile ? '90%' : '35%',
+                        textAlign: isMobile ? 'center' : 'left',
                         opacity: textOpacity, x: textX, zIndex: 1
                     }}
+                    className="flex flex-col items-center md:items-start"
                 >
                     <div style={{ display: 'inline-flex', alignItems: 'center', gap: 12, marginBottom: 24 }}>
                         <span style={{ width: 14, height: 2, background: '#D33C29' }} />
@@ -65,7 +78,7 @@ export default function ThrissurVideo() {
                     </p>
                 </motion.div>
 
-                {/* 2. The Extending Video Element */}
+                {/* 2. The Extending Background Image Element */}
                 <motion.div
                     style={{
                         position: 'absolute', inset: 0, zIndex: 10,
@@ -78,7 +91,7 @@ export default function ThrissurVideo() {
                         poster="https://images.unsplash.com/photo-1625246333195-78d9c38ad449?w=1600&auto=format&fit=crop"
                         style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                     >
-                        <source src="/videos/thrissur-culture.mp4" type="video/mp4" />
+                        <source src="https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4" type="video/mp4" />
                     </video>
 
                     {/* Dark Tint covering the video to make final text readable */}
@@ -138,19 +151,6 @@ export default function ThrissurVideo() {
                 </div>
 
             </div>
-
-            <style>{`
-                @media (max-width: 900px) {
-                    /* On mobile, adjust the starting clip-path to be a small card at the bottom */
-                    section > div > div:nth-child(2) {
-                        clip-path: inset(55% 5% 5% 5% round 24px) !important;
-                    }
-                    /* Move text to top center */
-                    section > div > div:nth-child(1) {
-                        width: 90% !important; left: 5% !important; top: 10% !important; text-align: center;
-                    }
-                }
-            `}</style>
         </section>
     );
 }

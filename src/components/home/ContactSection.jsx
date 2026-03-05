@@ -72,7 +72,7 @@ export default function ContactSection() {
                         initial={{ opacity: 0, x: 40 }}
                         animate={inView ? { opacity: 1, x: 0 } : {}}
                         transition={{ duration: 0.8, delay: 0.4, ease: 'easeOut' }}
-                        className="bg-white/5 backdrop-blur-3xl rounded-[32px] p-10 md:p-14 border border-white/10"
+                        className="bg-white/5 backdrop-blur-3xl rounded-[32px] p-6 sm:p-10 md:p-14 border border-white/10"
                     >
                         <form className="flex flex-col gap-8">
                             <div className="relative group">
@@ -109,7 +109,7 @@ export default function ContactSection() {
                                 whileHover={{ scale: 1.02 }}
                                 whileTap={{ scale: 0.95 }}
                                 transition={{ type: 'spring', stiffness: 400, damping: 25 }}
-                                className="w-full bg-[#D33C29] hover:bg-[#a82d1e] text-white rounded-2xl py-6 flex items-center justify-center gap-3 text-sm font-bold uppercase tracking-widest transition-colors shadow-[0_10px_30px_rgba(211,60,41,0.3)] mt-2"
+                                className="w-full bg-[#D33C29] hover:bg-[#a82d1e] text-white rounded-2xl py-4 md:py-6 flex items-center justify-center gap-3 text-sm font-bold uppercase tracking-widest transition-colors shadow-[0_10px_30px_rgba(211,60,41,0.3)] mt-2"
                             >
                                 Submit Request <ArrowRight size={18} />
                             </motion.button>

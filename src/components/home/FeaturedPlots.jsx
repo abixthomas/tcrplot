@@ -7,8 +7,8 @@ import Image from 'next/image';
 const PLOTS = [
     { id: 1, title: 'The Heritage Reserve', location: 'Punkunnam, Thrissur', price: '₹1.2 Cr', area: '15 Cents', image: 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=800&q=80', status: 'Available' },
     { id: 2, title: 'Ollur Green Valley', location: 'Ollur, Thrissur', price: '₹85 L', area: '10 Cents', image: 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=800&q=80', status: 'Just Listed' },
-    { id: 3, title: 'Cultural Corridor plots', location: 'Thrissur City', price: '₹2.5 Cr', area: '20 Cents', image: 'https://images.unsplash.com/photo-1600607687985-cecb5b85a1ef?w=800&q=80', status: 'Premium' },
-    { id: 4, title: 'Kuttippuram Estates', location: 'Thrissur Outskirts', price: '₹60 L', area: '12 Cents', image: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800&q=80', status: 'Available' },
+    { id: 3, title: 'Cultural Corridor plots', location: 'Thrissur City', price: '₹2.5 Cr', area: '20 Cents', image: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800&q=80', status: 'Premium' },
+    { id: 4, title: 'Kuttippuram Estates', location: 'Thrissur Outskirts', price: '₹60 L', area: '12 Cents', image: 'https://images.unsplash.com/photo-1628624747186-a941c476b7ef?w=800&q=80', status: 'Available' },
     { id: 5, title: 'The Royal Canvas', location: 'Kuttanellur, Thrissur', price: '₹1.8 Cr', area: '18 Cents', image: 'https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?w=800&q=80', status: 'Selling Fast' }
 ];
 
@@ -48,7 +48,7 @@ function TiltCard({ plot }) {
             onMouseMove={handleMouseMove}
             onMouseLeave={handleMouseLeave}
             style={{ rotateX, rotateY, transformStyle: 'preserve-3d', perspective: 1000 }}
-            className="group relative flex-shrink-0 w-[400px] h-[550px] rounded-2xl overflow-hidden cursor-pointer bg-white"
+            className="group relative flex-shrink-0 w-[85vw] sm:w-[400px] h-[65vh] sm:h-[550px] min-h-[450px] max-h-[600px] rounded-2xl overflow-hidden cursor-pointer bg-white"
         >
             {/* The Image (Scales on hover) */}
             <motion.div
@@ -108,18 +108,22 @@ function TiltCard({ plot }) {
 }
 
 export default function FeaturedPlots() {
-    const containerRef = useRef(null);
-    const { scrollYProgress } = useScroll({
-        target: containerRef,
-        offset: ['start end', 'end start'] // When the section enters/leaves the viewport
-    });
+    const scrollContainerRef = useRef(null);
 
-    // Translate the grid horizontally as the user scrolls down vertically
-    // This gives the "horizontal scroll" effect while continuing to scroll down
-    const xTransform = useTransform(scrollYProgress, [0, 1], ['0%', '-40%']);
+    const scrollLeft = () => {
+        if (scrollContainerRef.current) {
+            scrollContainerRef.current.scrollBy({ left: -450, behavior: 'smooth' });
+        }
+    };
+
+    const scrollRight = () => {
+        if (scrollContainerRef.current) {
+            scrollContainerRef.current.scrollBy({ left: 450, behavior: 'smooth' });
+        }
+    };
 
     return (
-        <section ref={containerRef} className="py-32 bg-[#F9FAFB] overflow-hidden">
+        <section className="py-32 bg-[#F9FAFB] overflow-hidden">
             <div className="container-site mb-16">
                 <motion.div
                     initial={{ opacity: 0, y: 30 }}
@@ -135,25 +139,41 @@ export default function FeaturedPlots() {
                         <h2 className="text-[#0B5C8A] text-4xl md:text-6xl font-extrabold font-['Plus_Jakarta_Sans'] leading-tight max-w-2xl">
                             The Avant-Garde <br />Collection
                         </h2>
-                        <a href="/plots" className="inline-flex items-center gap-2 text-[#0B5C8A] font-bold text-sm uppercase tracking-widest hover:text-[#D33C29] transition-colors relative group">
-                            View All Properties <ExternalLink size={16} />
-                            <span className="absolute -bottom-2 left-0 right-0 h-[2px] bg-[#D33C29] scale-x-0 group-hover:scale-x-100 transition-transform origin-left ease-out" />
-                        </a>
+                        <div className="flex items-center gap-6">
+                            <div className="flex gap-2">
+                                <button onClick={scrollLeft} aria-label="Scroll Left" className="w-12 h-12 rounded-full border border-[#0B5C8A]/20 flex items-center justify-center text-[#0B5C8A] hover:bg-[#0B5C8A] hover:text-white transition-colors">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M15 18l-6-6 6-6" /></svg>
+                                </button>
+                                <button onClick={scrollRight} aria-label="Scroll Right" className="w-12 h-12 rounded-full border border-[#0B5C8A]/20 flex items-center justify-center text-[#0B5C8A] hover:bg-[#0B5C8A] hover:text-white transition-colors">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M9 18l6-6-6-6" /></svg>
+                                </button>
+                            </div>
+                            <a href="/plots" className="hidden md:inline-flex items-center gap-2 text-[#0B5C8A] font-bold text-sm uppercase tracking-widest hover:text-[#D33C29] transition-colors relative group">
+                                View All Properties <ExternalLink size={16} />
+                                <span className="absolute -bottom-2 left-0 right-0 h-[2px] bg-[#D33C29] scale-x-0 group-hover:scale-x-100 transition-transform origin-left ease-out" />
+                            </a>
+                        </div>
                     </div>
                 </motion.div>
             </div>
 
-            {/* Horizontal Drag/Scroll Track */}
+            {/* Horizontal Control Track */}
             <div className="pl-[max(24px,calc((100vw-1200px)/2))]">
-                <motion.div
-                    style={{ x: xTransform }}
-                    className="flex gap-8 pr-[20vw]"
+                <div
+                    ref={scrollContainerRef}
+                    className="flex gap-8 pr-[20vw] overflow-x-auto hide-scrollbar snap-x snap-mandatory pt-4 pb-12 w-full"
                 >
                     {PLOTS.map(plot => (
-                        <TiltCard key={plot.id} plot={plot} />
+                        <div key={plot.id} className="snap-start">
+                            <TiltCard plot={plot} />
+                        </div>
                     ))}
-                </motion.div>
+                </div>
             </div>
+            <style>{`
+                .hide-scrollbar::-webkit-scrollbar { display: none; }
+                .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+            `}</style>
         </section>
     );
 }
