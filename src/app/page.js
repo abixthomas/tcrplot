@@ -25,7 +25,7 @@ export default function HomePage() {
             {/* 1. Hero — Cinematic slider + search panel + floating stats */}
             <Hero />
 
-            <div className="h-32 md:h-48 lg:h-64 bg-[#FFFFFF] w-full" />
+            <div className="h-32 md:h-48 lg:h-64 bg-[#0B5C8A] w-full" />
 
             {/* 2. Thrissur Video — Why invest in Thrissur, video + content */}
             <ThrissurVideo />

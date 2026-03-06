@@ -79,9 +79,8 @@ function TiltCard({ plot }) {
             </div>
 
             {/* Slide-Up Details Panel (Reveals on hover) */}
-            <motion.div
-                className="absolute bottom-0 left-0 right-0 bg-white p-8 translate-y-full group-hover:translate-y-0 transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]"
-                style={{ transform: 'translateZ(50px)' }}
+            <div
+                className="absolute bottom-0 left-0 right-0 bg-white p-6 sm:p-8 transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] [transform:translateZ(50px)_translateY(101%)] group-hover:[transform:translateZ(50px)_translateY(0%)] shadow-[0_-20px_40px_rgba(0,0,0,0.1)] rounded-t-3xl border-t border-gray-100"
             >
                 <h3 className="text-[#0B5C8A] text-2xl font-bold font-['Plus_Jakarta_Sans'] leading-tight mb-2">{plot.title}</h3>
                 <div className="flex items-center text-[#0B5C8A]/70 text-sm font-medium mb-6">
@@ -102,7 +101,7 @@ function TiltCard({ plot }) {
                         </div>
                     </div>
                 </div>
-            </motion.div>
+            </div>
         </motion.div>
     );
 }
@@ -158,7 +157,7 @@ export default function FeaturedPlots() {
             </div>
 
             {/* Horizontal Control Track */}
-            <div className="pl-[max(24px,calc((100vw-1200px)/2))]">
+            <div className="pl-[max(24px,calc((100vw-1280px)/2))]">
                 <div
                     ref={scrollContainerRef}
                     className="flex gap-8 pr-[20vw] overflow-x-auto hide-scrollbar snap-x snap-mandatory pt-4 pb-12 w-full"

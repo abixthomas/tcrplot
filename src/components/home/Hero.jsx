@@ -205,7 +205,7 @@ export default function Hero() {
                     <motion.div className="w-full relative h-[45vh] min-h-[380px] rounded-[24px] shadow-2xl overflow-hidden">
                         <motion.img
                             style={{ y: imageY }}
-                            src="https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=1200&auto=format&fit=crop"
+                            src="/images/plots/plot1.jpg"
                             alt="Premium Real Estate Plot"
                             className="w-full h-[120%] object-cover object-center absolute -top-[10%]"
                         />
@@ -240,7 +240,7 @@ export default function Hero() {
                         animate={{ scale: 1.05 }}
                         transition={{ duration: 2, ease: "easeOut" }}
                         style={{ y: imageY }}
-                        src="https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=1600&auto=format&fit=crop"
+                        src="/images/plots/plot1.jpg"
                         alt="Premium Real Estate Plot"
                         className="w-[110%] h-[120%] object-cover object-center absolute -top-[10%] -left-[5%]"
                     />

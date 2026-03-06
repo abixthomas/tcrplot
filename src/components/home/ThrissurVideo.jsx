@@ -88,7 +88,7 @@ export default function ThrissurVideo() {
                 >
                     <video
                         autoPlay muted loop playsInline
-                        poster="https://images.unsplash.com/photo-1625246333195-78d9c38ad449?w=1600&auto=format&fit=crop"
+                        poster="/images/plots/plot1.jpg"
                         style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                     >
                         <source src="https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4" type="video/mp4" />
